@@ -1,2 +1,2 @@
-export { default as Query } from "./querry";
+export { default as Query } from "./query";
 
