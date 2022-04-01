@@ -4,6 +4,7 @@ import { makeExecutableSchema } from '@graphql-tools/schema'
 import path from 'path';
 
 import * as user from './user';
+import * as trainee from './Trainee';
 
 const typesArray = loadFilesSync(path.join(__dirname, './**/*.graphql'));
 
@@ -13,7 +14,11 @@ export default makeExecutableSchema({
   resolvers: {
     Query: {
       ...user.Query,
+      ...trainee.Query,
     },
+  Mutation: {
+    ...trainee.Mutation
+  }
   },
   typeDefs: [appSchema],
 });

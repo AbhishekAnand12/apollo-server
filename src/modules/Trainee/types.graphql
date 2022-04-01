@@ -1,0 +1,11 @@
+type Trainee {
+  id: ID
+  name: String
+  email: String
+}
+
+input TraineeData {
+  id: ID
+  name: String
+  email: String
+}
