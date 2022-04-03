@@ -11,11 +11,10 @@ class userService {
   }
 
   updateTraineeData({ id, name, email }) {
-    this.trainee.delete(id);
-    this.trainee.set((id), { id, name, email });
-    console.log(this.trainee.set((id), { id, name, email }));
-    // const updatedTrainee = this.trainee.get(Number(id), { id, name, email });
-    return this.trainee.set(id, { id, name, email });
+    this.trainee.delete(parseInt(id));
+    this.trainee.set(parseInt(id), { id, name, email });
+    const updatedTrainee = this.trainee.get(parseInt(id), { id, name, email });
+    return updatedTrainee;
   }
 
   deleteTraineeData = ({ id }) => this.trainee.delete(parseInt(id));
