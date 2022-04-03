@@ -8,3 +8,8 @@ type Mutation {
   updateTraineeData(input: TraineeData): Trainee
   deleteTraineeData(input: TraineeData): Trainee
 }
+type Subscription {
+  createTraineeData: Trainee!
+  updateTraineeData: Trainee!
+  deleteTraineeData: Trainee!
+}
