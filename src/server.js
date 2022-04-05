@@ -1,11 +1,11 @@
-import bodyParser from 'body-parser';
-import compress from 'compression';
-import cors from 'cors';
-import { createServer } from 'http';
-import Express from 'express';
-import helmet from 'helmet';
-import methodOverride from 'method-override';
-import { ApolloServer } from 'apollo-server-express';
+import bodyParser from "body-parser";
+import compress from "compression";
+import cors from "cors";
+import { createServer } from "http";
+import Express from "express";
+import helmet from "helmet";
+import methodOverride from "method-override";
+import { ApolloServer } from "apollo-server-express";
 import { execute, subscribe } from "graphql";
 import { SubscriptionServer } from "subscriptions-transport-ws";
 export default class Server {
@@ -52,6 +52,14 @@ export default class Server {
 
     this.server = new ApolloServer({
       schema,
+      context: ({ req }) => ({
+        authorization: req.headers.authorization,
+      }),
+      dataSources: () => {
+        return {
+          TraineeAPI: new TraineeAPI(),
+        };
+      },
       // plugins: [
       //   {
       //     async serverWillStart() {
@@ -63,19 +71,22 @@ export default class Server {
       //     }
       //   },
       // ],
-      onHealthCheck: () => new Promise.resolve('I am OK'),
+      onHealthCheck: () => new Promise.resolve("I am OK"),
     });
-    
+
     await this.server.start();
     this.server.applyMiddleware({ app });
-    SubscriptionServer.create({
-      schema,
-      execute,
-      subscribe,
-    }, {
-      server: this.httpServer,
-      path: this.server.graphqlPath,
-    });
+    SubscriptionServer.create(
+      {
+        schema,
+        execute,
+        subscribe,
+      },
+      {
+        server: this.httpServer,
+        path: this.server.graphqlPath,
+      }
+    );
     this.run();
   }
 
@@ -99,9 +110,11 @@ export default class Server {
    * Helmet helps you secure your Express apps by setting various HTTP headers.
    */
   _initHelmet() {
-    this.app.use(helmet.permittedCrossDomainPolicies({
-      permittedPolicies: "by-content-type",
-    }));
+    this.app.use(
+      helmet.permittedCrossDomainPolicies({
+        permittedPolicies: "by-content-type",
+      })
+    );
   }
 
   /**

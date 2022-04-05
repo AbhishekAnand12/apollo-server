@@ -6,4 +6,6 @@ export default {
   updateTraineeData: (_, { input }) => userService.updateTraineeData(input),
 
   deleteTraineeData: (_, { input }) => userService.deleteTraineeData(input),
+  loginTrainee: (_, { input }, { dataSources }) =>
+    dataSources.TraineeAPI.loginUser(input),
 };

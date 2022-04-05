@@ -1,11 +1,18 @@
 type Trainee {
   id: ID
+  originalId: ID,
   name: String
   email: String
+  token:String,
+  password:String,
 }
 
 input TraineeData {
   id: ID
+  originalId: ID
   name: String
   email: String
+  token: String
+  password: String
+  
 }
