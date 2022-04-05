@@ -9,3 +9,10 @@ input TraineeData {
   name: String
   email: String
 }
+input CreateData {
+  name: String
+  email: String
+}
+input DeleteData {
+    id: ID
+}

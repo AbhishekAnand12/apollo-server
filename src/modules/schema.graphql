@@ -4,9 +4,9 @@ type Query {
 }
 
 type Mutation {
-  createTraineeData(input: TraineeData): Trainee
+  createTraineeData(input: CreateData): Trainee
   updateTraineeData(input: TraineeData): Trainee
-  deleteTraineeData(input: TraineeData): Trainee
+  deleteTraineeData(input: DeleteData): Trainee
 }
 
 type Subscription {
