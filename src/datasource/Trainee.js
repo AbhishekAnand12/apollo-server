@@ -20,6 +20,27 @@ class TraineeAPI extends RESTDataSource {
     const res = await this.post("/generateToken", { email, password });
     return { token: res.data.accessToken };
   };
+  createUser = async ({ name, email, password }) => {
+    const res = await this.post("/", { name, email, password });
+    console.log(`createuser is : ${JSON.stringify(res)}`);
+    return res.date;
+  };
+
+  updateUser = async ({ name, email, password, role, originalId }) => {
+    const res = await this.put("/", {
+      name,
+      email,
+      password,
+      role,
+      originalId,
+    });
+    return res.data;
+  };
+
+  deleteUser = async ({ originalId }) => {
+    const res = await this.delete(`/${originalId}`);
+    return res.data;
+  };
 }
 
 export default TraineeAPI;

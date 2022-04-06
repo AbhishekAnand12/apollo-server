@@ -7,27 +7,27 @@ import {
 import PubSub from "../pubsub";
 
 export default {
-  createTraineeData: (_, { input }) => {
+  createTraineeData: (_, { input }, { dataSources }) => {
     PubSub.publish(TRAINEE_CREATED_WITH_SUBSCRIBE, {
       createTraineeData: userService.createTraineeData(input),
     });
     return userService.createTraineeData(input);
   },
 
-  updateTraineeData: (_, { input }) => {
+  updateTraineeData: (_, { input }, { dataSources }) => {
     PubSub.publish(TRAINEE_UPDATED_WITH_SUBSCRIBE, {
       updateTraineeData: userService.updateTraineeData(input),
     });
     return userService.updateTraineeData(input);
   },
 
-  deleteTraineeData: (_, { input }) => {
+  deleteTraineeData: (_, { input }, { dataSources }) => {
     PubSub.publish(TRAINEE_DELETED_WITH_SUBSCRIBE, {
       deleteTraineeData: userService.deleteTraineeData(input),
     });
     return userService.deleteTraineeData(input);
   },
-  
+
   loginTrainee: (_, { input }, { dataSources }) =>
     dataSources.TraineeAPI.loginUser(input),
 };
