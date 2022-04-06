@@ -1,5 +1,3 @@
-import UserService from '../../service/UserService';
-
 export default {
-  getAllTraineeData: () => UserService.getAllTraineeData(),
+  getAllTraineeData: (_, __, { dataSources }) => dataSources.TraineeAPI.getMe(),
 };

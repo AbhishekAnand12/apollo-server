@@ -8,6 +8,7 @@ import methodOverride from "method-override";
 import { ApolloServer } from "apollo-server-express";
 import { execute, subscribe } from "graphql";
 import { SubscriptionServer } from "subscriptions-transport-ws";
+import TraineeAPI from "./datasource/Trainee";
 export default class Server {
   constructor(config) {
     this.config = config;
@@ -52,9 +53,10 @@ export default class Server {
 
     this.server = new ApolloServer({
       schema,
-      context: ({ req }) => ({
+      context: ({ req }) => {
+        return {
         authorization: req.headers.authorization,
-      }),
+      }},
       dataSources: () => {
         return {
           TraineeAPI: new TraineeAPI(),

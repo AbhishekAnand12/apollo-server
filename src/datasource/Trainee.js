@@ -6,6 +6,7 @@ class TraineeAPI extends RESTDataSource {
     super();
     this.baseURL = `${configurations.serviceUrl}/api/user`;
   }
+
   willSendRequest(request) {
     request.headers.set("Authorization", this.context.authorization);
   }
@@ -17,7 +18,8 @@ class TraineeAPI extends RESTDataSource {
 
   loginUser = async ({ email, password }) => {
     const res = await this.post("/generateToken", { email, password });
-    return { token: res.data.token };
+    return { token: res.data.accessToken };
   };
 }
+
 export default TraineeAPI;

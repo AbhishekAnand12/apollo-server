@@ -1,6 +1,6 @@
 type Trainee {
   id: ID
-  originalId: ID,
+  OriginalId: ID,
   name: String
   email: String
   token:String,
@@ -9,10 +9,19 @@ type Trainee {
 
 input TraineeData {
   id: ID
-  originalId: ID
+  OriginalId: ID
   name: String
   email: String
   token: String
   password: String
   
+}
+
+input CreateData {
+  name: String
+  email: String
+}
+
+input DeleteData {
+    id: ID
 }
