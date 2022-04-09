@@ -1,33 +1,29 @@
 import userService from "../../service/UserService";
-import {
-  TRAINEE_CREATED_WITH_SUBSCRIBE,
-  TRAINEE_UPDATED_WITH_SUBSCRIBE,
-  TRAINEE_DELETED_WITH_SUBSCRIBE,
-} from "../../lib/constant";
-import PubSub from "../pubsub";
 
 export default {
-  createTraineeData: (_, { input }, { dataSources }) => {
-    PubSub.publish(TRAINEE_CREATED_WITH_SUBSCRIBE, {
-      createTraineeData: userService.createTraineeData(input),
+  createTraineeData: (_, { input }, { dataSources }) =>
+    dataSources.traineeApi.createUser(input),
+  updateTraineeData: async (_, { input }, { dataSources }) => {
+    const { OriginalId, name, email, password, role } = input;
+    console.log(`inside update trainee of trainee ${JSON.stringify(input)}`);
+    const update = await dataSources.traineeApi.updateUser({
+      OriginalId,
+      name,
+      email,
+      password,
+      role,
     });
-    return userService.createTraineeData(input);
+    return update;
+  },
+  deleteTraineeData: async (_, { input }, { dataSources }) => {
+    const deleted = await dataSources.traineeApi.deleteUser(input);
+    console.log(`deleted is :: ${JSON.stringify(deleted)}`);
+    return deleted;
   },
 
-  updateTraineeData: (_, { input }, { dataSources }) => {
-    PubSub.publish(TRAINEE_UPDATED_WITH_SUBSCRIBE, {
-      updateTraineeData: userService.updateTraineeData(input),
-    });
-    return userService.updateTraineeData(input);
+  loginTrainee: (_, { input }, { dataSources }) => {
+    const login = dataSources.traineeApi.loginUser(input);
+    console.log(`login is :: ${JSON.stringify(login)}`);
+    return login;
   },
-
-  deleteTraineeData: (_, { input }, { dataSources }) => {
-    PubSub.publish(TRAINEE_DELETED_WITH_SUBSCRIBE, {
-      deleteTraineeData: userService.deleteTraineeData(input),
-    });
-    return userService.deleteTraineeData(input);
-  },
-
-  loginTrainee: (_, { input }, { dataSources }) =>
-    dataSources.TraineeAPI.loginUser(input),
 };

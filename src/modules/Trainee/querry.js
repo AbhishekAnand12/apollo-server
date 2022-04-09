@@ -1,3 +1,3 @@
 export default {
-  getAllTraineeData: (_, __, { dataSources }) => dataSources.TraineeAPI.getMe(),
+  getAllTraineeData: (_, __, { dataSources }) => dataSources.traineeApi.getMe(),
 };

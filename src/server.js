@@ -8,7 +8,7 @@ import methodOverride from "method-override";
 import { ApolloServer } from "apollo-server-express";
 import { execute, subscribe } from "graphql";
 import { SubscriptionServer } from "subscriptions-transport-ws";
-import TraineeAPI from "./datasource/Trainee";
+import { TraineeAPI } from "./datasource";
 export default class Server {
   constructor(config) {
     this.config = config;
@@ -55,24 +55,14 @@ export default class Server {
       schema,
       context: ({ req }) => {
         return {
-        authorization: req.headers.authorization,
-      }},
-      dataSources: () => {
-        return {
-          TraineeAPI: new TraineeAPI(),
+          authorization: req.headers.authorization,
         };
       },
-      // plugins: [
-      //   {
-      //     async serverWillStart() {
-      //       return {
-      //         async drainServer() {
-      //           subscriptionServer.close();
-      //         }
-      //       };
-      //     }
-      //   },
-      // ],
+      dataSources: () => {
+        return {
+          traineeApi: new TraineeAPI(),
+        };
+      },
       onHealthCheck: () => new Promise.resolve("I am OK"),
     });
 
