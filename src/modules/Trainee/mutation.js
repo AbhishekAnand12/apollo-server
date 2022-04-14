@@ -1,31 +1,31 @@
 import userService from "../../service/UserService";
-import {TRAINEE_CREATED_WITH_SUBSCRIBE,
-TRAINEE_UPDATED_WITH_SUBSCRIBE,
-TRAINEE_DELETED_WITH_SUBSCRIBE} from '../../lib/constant';
+import {
+  TRAINEE_CREATED_WITH_SUBSCRIBE,
+  TRAINEE_UPDATED_WITH_SUBSCRIBE,
+  TRAINEE_DELETED_WITH_SUBSCRIBE,
+} from "../../lib/constant";
 import PubSub from "../pubsub";
-
 
 export default {
   createTraineeData: (_, { input }) => {
+    const result = userService.createTraineeData(input);
     PubSub.publish(TRAINEE_CREATED_WITH_SUBSCRIBE, {
-      createTraineeData: userService.createTraineeData(input),
+      createTraineeData: result,
     });
-    return userService.createTraineeData(input);
+    return result;
   },
   updateTraineeData: (_, { input }) => {
+    const result = userService.updateTraineeData(input);
     PubSub.publish(TRAINEE_UPDATED_WITH_SUBSCRIBE, {
-      updateTraineeData: userService.updateTraineeData(input),
+      updateTraineeData: result,
     });
-    return userService.updateTraineeData(input);
+    return result;
   },
   deleteTraineeData: (_, { input }) => {
+    const result = userService.deleteTraineeData(input);
     PubSub.publish(TRAINEE_DELETED_WITH_SUBSCRIBE, {
-      deleteTraineeData: userService.deleteTraineeData(input),
+      deleteTraineeData: result,
     });
-    return userService.deleteTraineeData(input);
+    return result;
   },
-
-  // updateTraineeData: (_, { input }) => userService.updateTraineeData(input),
-
-  // deleteTraineeData: (_, { input }) => userService.deleteTraineeData(input),
 };
