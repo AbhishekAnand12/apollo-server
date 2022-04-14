@@ -1,19 +1,22 @@
 type Trainee {
-  id: ID
   OriginalId: ID,
   name: String
   email: String
-  token:String,
-  password:String,
+}
+
+type Login {
+  token: String
+}
+
+input LoginTrainee {
+  email: String
+  password: String
 }
 
 input TraineeData {
-  id: ID
   OriginalId: ID
   name: String
   email: String
-  token: String
-  password: String
   
 }
 

@@ -7,7 +7,7 @@ type Mutation {
   createTraineeData(input: CreateData): Trainee
   updateTraineeData(input: TraineeData): Trainee
   deleteTraineeData(input: DeleteData): Trainee
-  loginTrainee(input: TraineeData): Trainee
+  loginTrainee(input: LoginTrainee): Login
 }
 
 type Subscription {
