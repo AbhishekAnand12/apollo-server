@@ -5,6 +5,7 @@ type Trainee {
   email: String
   token: String
   password: String
+  createdAt: String
 }
 
 input TraineeData {
