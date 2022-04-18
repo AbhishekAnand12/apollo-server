@@ -1,13 +1,14 @@
-import bodyParser from 'body-parser';
-import compress from 'compression';
-import cors from 'cors';
-import { createServer } from 'http';
-import Express from 'express';
-import helmet from 'helmet';
-import methodOverride from 'method-override';
-import { ApolloServer } from 'apollo-server-express';
+import bodyParser from "body-parser";
+import compress from "compression";
+import cors from "cors";
+import { createServer } from "http";
+import Express from "express";
+import helmet from "helmet";
+import methodOverride from "method-override";
+import { ApolloServer } from "apollo-server-express";
 import { execute, subscribe } from "graphql";
 import { SubscriptionServer } from "subscriptions-transport-ws";
+import { TraineeAPI } from "./datasource";
 export default class Server {
   constructor(config) {
     this.config = config;
@@ -52,30 +53,32 @@ export default class Server {
 
     this.server = new ApolloServer({
       schema,
-      // plugins: [
-      //   {
-      //     async serverWillStart() {
-      //       return {
-      //         async drainServer() {
-      //           subscriptionServer.close();
-      //         }
-      //       };
-      //     }
-      //   },
-      // ],
-      onHealthCheck: () => new Promise.resolve('I am OK'),
+      context: ({ req }) => {
+        return {
+          authorization: req.headers.authorization,
+        };
+      },
+      dataSources: () => {
+        return {
+          traineeApi: new TraineeAPI(),
+        };
+      },
+      onHealthCheck: () => new Promise.resolve("I am OK"),
     });
-    
+
     await this.server.start();
     this.server.applyMiddleware({ app });
-    SubscriptionServer.create({
-      schema,
-      execute,
-      subscribe,
-    }, {
-      server: this.httpServer,
-      path: this.server.graphqlPath,
-    });
+    SubscriptionServer.create(
+      {
+        schema,
+        execute,
+        subscribe,
+      },
+      {
+        server: this.httpServer,
+        path: this.server.graphqlPath,
+      }
+    );
     this.run();
   }
 
@@ -99,9 +102,11 @@ export default class Server {
    * Helmet helps you secure your Express apps by setting various HTTP headers.
    */
   _initHelmet() {
-    this.app.use(helmet.permittedCrossDomainPolicies({
-      permittedPolicies: "by-content-type",
-    }));
+    this.app.use(
+      helmet.permittedCrossDomainPolicies({
+        permittedPolicies: "by-content-type",
+      })
+    );
   }
 
   /**

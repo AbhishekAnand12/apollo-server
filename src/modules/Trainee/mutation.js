@@ -1,31 +1,39 @@
 import userService from "../../service/UserService";
-import {
-  TRAINEE_CREATED_WITH_SUBSCRIBE,
-  TRAINEE_UPDATED_WITH_SUBSCRIBE,
-  TRAINEE_DELETED_WITH_SUBSCRIBE,
-} from "../../lib/constant";
-import PubSub from "../pubsub";
+import pubsub from "../pubsub";
 
 export default {
-  createTraineeData: (_, { input }) => {
-    const result = userService.createTraineeData(input);
-    PubSub.publish(TRAINEE_CREATED_WITH_SUBSCRIBE, {
-      createTraineeData: result,
+  createTraineeData: (_, { input: { name, email } }, { dataSources }) => {
+    pubsub.publish("TRAINEE_CREATED_WITH_SUBSCRIBE", {
+      createTraineeData: (_, { name, email }),
     });
-    return result;
+    return dataSources.traineeApi.createUser({ name, email });
   },
-  updateTraineeData: (_, { input }) => {
-    const result = userService.updateTraineeData(input);
-    PubSub.publish(TRAINEE_UPDATED_WITH_SUBSCRIBE, {
-      updateTraineeData: result,
+
+  updateTraineeData: async (_, { input }, { dataSources }) => {
+    const { OriginalId, name, email, password, role } = input;
+    pubsub.publish("TRAINEE_UPDATED_WITH_SUBSCRIBE", {
+      updateTraineeData: (_, { name, email }),
     });
-    return result;
+    const update = await dataSources.traineeApi.updateUser({
+      OriginalId,
+      name,
+      email,
+      password,
+      role,
+    });
+    return update;
   },
-  deleteTraineeData: (_, { input }) => {
-    const result = userService.deleteTraineeData(input);
-    PubSub.publish(TRAINEE_DELETED_WITH_SUBSCRIBE, {
-      deleteTraineeData: result,
+  deleteTraineeData: async (_, { input }, { dataSources }) => {
+    const deleted = await dataSources.traineeApi.deleteUser(input);
+    const { message, data } = deleted;
+    pubsub.publish("TRAINEE_DELETED_WITH_SUBSCRIBE", {
+      deleteTraineeData: (_, { message, data }),
     });
-    return result;
+    return deleted;
+  },
+
+  loginTrainee: (_, { input }, { dataSources }) => {
+    const login = dataSources.traineeApi.loginUser(input);
+    return login;
   },
 };
