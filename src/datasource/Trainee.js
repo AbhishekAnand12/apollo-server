@@ -40,7 +40,7 @@ class TraineeAPI extends RESTDataSource {
 
   deleteUser = async ({ OriginalId }) => {
     const res = await this.delete(`/${OriginalId}`);
-    return res.data;
+    return res;
   };
 }
 

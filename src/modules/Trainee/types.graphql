@@ -1,20 +1,22 @@
 type Trainee {
-  id: ID
   OriginalId: ID
   name: String
   email: String
+}
+
+type Login {
   token: String
+}
+
+input LoginTrainee {
+  email: String
   password: String
-  createdAt: String
 }
 
 input TraineeData {
-  id: ID
   OriginalId: ID
   name: String
   email: String
-  token: String
-  password: String
 }
 
 input CreateData {
@@ -24,4 +26,13 @@ input CreateData {
 
 input DeleteData {
   OriginalId: String
+}
+
+type DeleteUserData {
+  message: String
+  data: data
+}
+
+type data {
+  id: String
 }

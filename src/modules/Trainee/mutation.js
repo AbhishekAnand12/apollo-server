@@ -11,7 +11,6 @@ export default {
 
   updateTraineeData: async (_, { input }, { dataSources }) => {
     const { OriginalId, name, email, password, role } = input;
-    // console.log(`inside update trainee of trainee ${JSON.stringify(input)}`);
     pubsub.publish("TRAINEE_UPDATED_WITH_SUBSCRIBE", {
       updateTraineeData: (_, { name, email }),
     });
@@ -25,18 +24,16 @@ export default {
     return update;
   },
   deleteTraineeData: async (_, { input }, { dataSources }) => {
-    const { OriginalId } = input;
     const deleted = await dataSources.traineeApi.deleteUser(input);
+    const { message, data } = deleted;
     pubsub.publish("TRAINEE_DELETED_WITH_SUBSCRIBE", {
-      deleteTraineeData: (_, { OriginalId }),
+      deleteTraineeData: (_, { message, data }),
     });
-    // console.log(`deleted is :: ${JSON.stringify(deleted)}`);
     return deleted;
   },
 
   loginTrainee: (_, { input }, { dataSources }) => {
     const login = dataSources.traineeApi.loginUser(input);
-    // console.log(`login is :: ${JSON.stringify(login)}`);
     return login;
   },
 };
