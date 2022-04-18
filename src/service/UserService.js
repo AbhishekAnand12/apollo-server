@@ -1,14 +1,14 @@
 import PubSub from "../modules/pubsub";
 class userService {
   constructor() {
-    this.id = 0;
     this.trainee = new Map();
+    this.id = 0;
   }
-  
+
   createTraineeData({ name, email }) {
-    this.id++;
     this.trainee.set(this.id, { id: this.id, name, email });
     const newTrainee = this.trainee.get(this.id);
+    this.id++;
     return newTrainee;
   }
 
@@ -26,7 +26,6 @@ class userService {
   deleteTraineeData({ id }) {
     return this.trainee.delete(parseInt(id));
   }
-
 }
 
 export default new userService();
